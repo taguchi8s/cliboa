@@ -103,6 +103,22 @@ jobs:
             git remote add upstream git@github.com:BrainPad/cliboa.git
             git push upstream development -f
             hub pull-request -m "development->master" -b master
+  
+  test_install_python35:
+      executor: python35_executor
+      steps:
+        - checkout
+        - run:
+            name: install cliboa
+            command: |
+              pip install .
+        - run:
+            name: execute cliboadmin
+            command: |
+              cliboadmin init test
+              cd test
+              pipenv install --dev --skip-lock
+
 
 rollout_filter: &rollout_filter
   filters:
