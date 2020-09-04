@@ -103,6 +103,61 @@ jobs:
             git remote add upstream git@github.com:BrainPad/cliboa.git
             git push upstream development -f
             hub pull-request -m "development->master" -b master
+  
+  test_install_python37:
+    executor: python37_executor
+    steps:
+      - checkout
+      - run:
+          name: install cliboa
+          command: |
+            pip install .
+      - run:
+          name: execute cliboadmin
+          command: |
+            cliboadmin init work
+      - run:
+          name: install dependencies
+          command: |
+            cd work
+            pipenv install
+
+  test_install_python36:
+    executor: python36_executor
+    steps:
+      - checkout
+      - run:
+          name: install cliboa
+          command: |
+            pip install .
+      - run:
+          name: execute cliboadmin
+          command: |
+            cliboadmin init work
+      - run:
+          name: install dependencies
+          command: |
+            cd work
+            pipenv install
+
+  test_install_python35:
+    executor: python35_executor
+    steps:
+      - checkout
+      - run:
+          name: install cliboa
+          command: |
+            pip install .
+      - run:
+          name: execute cliboadmin
+          command: |
+            cliboadmin init work
+      - run:
+          name: install dependencies
+          command: |
+            cd work
+            pipenv install
+
 
 rollout_filter: &rollout_filter
   filters:
@@ -116,9 +171,15 @@ workflows:
       - test_python37
       - test_python36
       - test_python35
+      - test_install_python37
+      - test_install_python36
+      - test_install_python35
       - push_dev_branch:
           <<: *rollout_filter
           requires:
             - test_python37
             - test_python36
             - test_python35
+            - test_install_python37
+            - test_install_python36
+            - test_install_python35
