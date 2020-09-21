@@ -48,9 +48,9 @@ jobs:
           pipenv --python $py_ver
           pipfile_ver=${py_ver//./}
           cp cliboa/template/Pipfile.above"$pipfile_ver" Pipfile
-          pipenv --python $py_ver
           pipenv install .
           pipenv install --dev --skip-lock
+          pipenv run python --version
     - run:
         name: execute flake8
         command: |
